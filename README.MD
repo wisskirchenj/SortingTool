@@ -15,7 +15,7 @@ In focus of this project are algorithmic topics, and finally completing the Java
 
 ## Repository Contents
 
-The sources of main project tasks (5 stages) and unit, mockito testing.
+The sources of main project tasks (6 stages) and unit, mockito testing.
 
 ## Program description
 
