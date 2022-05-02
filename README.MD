@@ -32,3 +32,4 @@ Have fun!
 25.04.22 Project started and Stage 1 completed. Simple number stream reading from stdin. Evaluating data into some
 statistics object, which is printed to console. Full coverage tests on Log4j and functionality using Junit and mockito-inline.
 
+
