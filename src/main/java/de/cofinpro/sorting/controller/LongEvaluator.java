@@ -19,7 +19,7 @@ public class LongEvaluator implements Evaluator {
     }
 
     /**
-     * Read a whitespace-separated list of long integers form stdin until end-of-file (Cmd-D on keyboard) and return
+     * Read a whitespace-separated list of long integers from stdin until end-of-file (Cmd-D on keyboard) and return
      * a tokenized list of Long numbers. Empty strings are filtered (e.g. around linebreak)
      * @throws NumberFormatException if a non-integer token is entered.
      */

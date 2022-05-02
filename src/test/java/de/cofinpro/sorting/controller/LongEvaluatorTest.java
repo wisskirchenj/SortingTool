@@ -1,5 +1,8 @@
-package de.cofinpro.sorting.view;
+package de.cofinpro.sorting.controller;
 
+import de.cofinpro.sorting.controller.LongEvaluator;
+import de.cofinpro.sorting.domain.LongStatistics;
+import de.cofinpro.sorting.domain.Statistics;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -19,33 +21,31 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class NumberReaderTest {
+class LongEvaluatorTest {
 
     @Mock
     Scanner scanner;
 
     @InjectMocks
-    NumberReader numberReader;
+    LongEvaluator longEvaluator;
 
     static Stream<Arguments> provideNumbers() {
         return Stream.of(
-                Arguments.of("1 2 3\n4 5\n6\n\n7 8 9\n", 9, 1),
-                        Arguments.of("\n2 0  4 5 6 7 8 9 7  ", 9, 2),
-                        Arguments.of("1",1 ,1),
-                        Arguments.of("", 0, -1)
+                Arguments.of("1 2 3\n4 5\n6\n\n7 8 9\n", 9, 9L, 1),
+                Arguments.of("\n2 0  4 9 6 9 8 9 7  ", 9, 9L, 3),
+                Arguments.of("1",1 ,1L, 1),
+                Arguments.of("", 0, 0L, 0)
         );
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbers")
-    void getNumberList(String text, int expectedSize, int expectedFirst) {
+    void getNumberList(String text, int expectedSize, long expectedMax, int expectedMaxOccurrences) {
         when(scanner.useDelimiter(anyString())).thenReturn(scanner);
         when(scanner.useDelimiter("\\s+").tokens()).thenReturn(Arrays.stream(text.split("\\s+")));
-        List<Long> numbers = numberReader.getNumberList();
-        assertNotNull(numbers);
-        assertEquals(expectedSize, numbers.size());
-        if (numbers.size()== 0) return;
-        assertEquals(expectedFirst, numbers.get(0));
+        longEvaluator.readUserInput();
+        Statistics expected = new LongStatistics(expectedSize, expectedMax, expectedMaxOccurrences);
+        assertEquals(expected, longEvaluator.calcStatistics());
     }
 
     @ParameterizedTest
@@ -53,6 +53,6 @@ class NumberReaderTest {
     void whenNonIntegerNumbers_ThenThrows(String text) {
         when(scanner.useDelimiter(anyString())).thenReturn(scanner);
         when(scanner.useDelimiter("\\s+").tokens()).thenReturn(Arrays.stream(text.split("\\s+")));
-        assertThrows(NumberFormatException.class, () -> numberReader.getNumberList());
+        assertThrows(NumberFormatException.class, () -> longEvaluator.readUserInput());
     }
 }

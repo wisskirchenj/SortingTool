@@ -31,6 +31,6 @@ public interface Statistics extends Serializable {
      * @return the percentage value.
      */
     default long calcMaxPercentage() {
-        return 100 * getMaxOccurrences() / getAmount();
+        return getAmount() != 0 ? 100 * getMaxOccurrences() / getAmount() : 0;
     }
 }
