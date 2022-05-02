@@ -34,3 +34,4 @@ statistics object, which is printed to console. Full coverage tests on Log4j and
 
 02.05.22 Stage 2 completed. Interface driven design for read in and evaluation of different objects. Full test coverage.
 
+02.05.22 Stage 3 completed, Long sorting added as 4th app mode. Result and SortResult interface added, tests

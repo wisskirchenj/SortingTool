@@ -1,17 +1,13 @@
 package de.cofinpro.sorting.controller;
 
-import de.cofinpro.sorting.domain.LongStatistics;
 import de.cofinpro.sorting.view.ConsolePrinter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,7 +24,7 @@ class SortingToolControllerTest {
     ArgumentCaptor<String> printCaptor;
 
     @Test
-    void wheModeLong_ThenLongStatistics() {
+    void whenModeLong_ThenLongStatistics() {
         controller = new SortingToolController(Mode.LONG, consolePrinter);
         controller.run();
         verify(consolePrinter).printObject(printCaptor.capture());
@@ -36,7 +32,7 @@ class SortingToolControllerTest {
     }
 
     @Test
-    void wheModeLine_ThenLineStatistics() {
+    void whenModeLine_ThenLineStatistics() {
         controller = new SortingToolController(Mode.LINE, consolePrinter);
         controller.run();
         verify(consolePrinter).printObject(printCaptor.capture());
@@ -44,10 +40,19 @@ class SortingToolControllerTest {
     }
 
     @Test
-    void wheModeWord_ThenLongStatistics() {
+    void whenModeWord_ThenLongStatistics() {
         controller = new SortingToolController(Mode.WORD, consolePrinter);
         controller.run();
         verify(consolePrinter).printObject(printCaptor.capture());
         assertTrue(printCaptor.getValue().contains("word:"));
+    }
+
+    @Test
+    void whenModeSortLong_ThenLongSortResult() {
+        controller = new SortingToolController(Mode.SORT_LONG, consolePrinter);
+        controller.run();
+        verify(consolePrinter).printObject(printCaptor.capture());
+        assertTrue(printCaptor.getValue().contains("numbers:"));
+        assertTrue(printCaptor.getValue().contains("Sorted data:"));
     }
 }

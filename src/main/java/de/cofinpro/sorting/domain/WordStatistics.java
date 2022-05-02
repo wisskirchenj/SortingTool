@@ -1,6 +1,5 @@
 package de.cofinpro.sorting.domain;
 
-import lombok.Builder;
 import lombok.Value;
 
 /**

@@ -1,6 +1,6 @@
 package de.cofinpro.sorting.controller;
 
-import de.cofinpro.sorting.domain.Statistics;
+import de.cofinpro.sorting.domain.Result;
 import de.cofinpro.sorting.view.ConsolePrinter;
 
 import java.util.Scanner;
@@ -17,10 +17,12 @@ public class SortingToolController {
 
     public SortingToolController(Mode mode, ConsolePrinter consolePrinter) {
         this.consolePrinter = consolePrinter;
+        Scanner scanner = new Scanner(System.in);
         this.evaluator = switch (mode) {
-            case LONG -> new LongEvaluator(new Scanner(System.in));
-            case LINE -> new LineEvaluator(new Scanner(System.in));
-            case WORD -> new WordEvaluator(new Scanner(System.in));
+            case LONG -> new LongEvaluator(scanner);
+            case LINE -> new LineEvaluator(scanner);
+            case WORD -> new WordEvaluator(scanner);
+            case SORT_LONG -> new LongSorter(scanner);
         };
     }
 
@@ -29,7 +31,7 @@ public class SortingToolController {
      */
     public void run() {
         evaluator.readUserInput();
-        Statistics statistics = evaluator.calcStatistics();
-        consolePrinter.printObject(statistics.getResult());
+        Result evaluationResult = evaluator.evaluate();
+        consolePrinter.printObject(evaluationResult.getResult());
     }
 }

@@ -36,7 +36,7 @@ public class WordEvaluator implements Evaluator {
      * @return a Statistics object containing the result.
      */
     @Override
-    public Statistics calcStatistics() {
+    public Statistics evaluate() {
         long amount = wordList.size();
         String max = wordList.stream()
                 .max(Comparator.comparingLong(String::length).thenComparing(String::compareTo))

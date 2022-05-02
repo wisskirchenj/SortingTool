@@ -36,7 +36,7 @@ public class LongEvaluator implements Evaluator {
      * @return the described information wrapped into a LongStatistics DTO
      */
     @Override
-    public Statistics calcStatistics() {
+    public Statistics evaluate() {
         long amount = longList.size();
         long max = longList.stream().max(Long::compareTo).orElse(0L);
         long maxOccurrences = longList.stream().filter(n -> n == max).count();

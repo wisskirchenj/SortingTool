@@ -33,7 +33,7 @@ public class LineEvaluator implements Evaluator {
      * @return a Statistics object containing the result.
      */
     @Override
-    public Statistics calcStatistics() {
+    public Statistics evaluate() {
         long amount = lineList.size();
         String max = lineList.stream()
                 .max(Comparator.comparingLong(String::length).thenComparing(String::compareTo))

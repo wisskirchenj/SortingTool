@@ -3,24 +3,37 @@ package de.cofinpro.sorting;
 import de.cofinpro.sorting.controller.Mode;
 import de.cofinpro.sorting.controller.SortingToolController;
 import de.cofinpro.sorting.view.ConsolePrinter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * main class for the sorting tool.
+ */
 public class SortingTool {
 
     private static final String USAGE = "Usage: java SortingTool [-dataType long|line|word].";
+    private static final String DATA_OPTION = "-dataType";
 
     public static void main(final String[] args) {
-        if (args.length > 0 && (args.length != 2 || !"-dataType".equals(args[0]))) {
-            log.error(USAGE);
-            return;
+        new SortingToolController(getMode(Arrays.asList(args)), new ConsolePrinter()).run();
+    }
+
+    static Mode getMode(List<String> argList) {
+        if (argList.isEmpty()) {
+            return Mode.WORD;
         }
-        Mode mode = args.length == 0 ? Mode.WORD : switch (args[1]) {
+        if (argList.contains("-sortIntegers")) {
+            return Mode.SORT_LONG;
+        }
+        if (!argList.contains(DATA_OPTION) || argList.indexOf(DATA_OPTION) >= argList.size() - 1) {
+            throw new IllegalStateException(USAGE);
+        }
+        return switch (argList.get(argList.indexOf(DATA_OPTION) + 1)) {
             case "long" -> Mode.LONG;
             case "line" -> Mode.LINE;
             case "word" -> Mode.WORD;
             default -> throw new IllegalStateException(USAGE);
         };
-        new SortingToolController(mode, new ConsolePrinter()).run();
     }
 }

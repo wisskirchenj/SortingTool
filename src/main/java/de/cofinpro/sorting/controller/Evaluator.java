@@ -1,9 +1,9 @@
 package de.cofinpro.sorting.controller;
 
-import de.cofinpro.sorting.domain.Statistics;
+import de.cofinpro.sorting.domain.Result;
 
 /**
- * classes implementing Evaluator read the user input and calculate statistical information.
+ * classes implementing Evaluator read the user input and calculate statistical information or sort.
  */
 public interface Evaluator {
 
@@ -16,5 +16,5 @@ public interface Evaluator {
      *
      * @return statistical information as implementation of Statistics interface
      */
-    Statistics calcStatistics();
+    Result evaluate();
 }

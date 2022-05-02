@@ -43,6 +43,6 @@ class LineEvaluatorTest {
         when(scanner.useDelimiter("\\n").tokens()).thenReturn(Arrays.stream(text.split("\\n")));
         lineEvaluator.readUserInput();
         Statistics expected = new LineStatistics(expectedSize, expectedMax, expectedMaxOccurrences);
-        assertEquals(expected, lineEvaluator.calcStatistics());
+        assertEquals(expected, lineEvaluator.evaluate());
     }
 }

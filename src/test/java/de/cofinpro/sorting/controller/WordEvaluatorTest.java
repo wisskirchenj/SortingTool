@@ -43,6 +43,6 @@ class WordEvaluatorTest {
         when(scanner.useDelimiter("\\s+").tokens()).thenReturn(Arrays.stream(text.split("\\s+")));
         wordEvaluator.readUserInput();
         Statistics expected = new WordStatistics(expectedSize, expectedMax, expectedMaxOccurrences);
-        assertEquals(expected, wordEvaluator.calcStatistics());
+        assertEquals(expected, wordEvaluator.evaluate());
     }
 }
