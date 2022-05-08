@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ConsolePrinter {
 
+    public void print(String msg) {
+        log.info(msg);
+    }
+
     public void printSortResult(List<?> sorted) {
         if (sorted.get(0) instanceof Long) {
             printLongResult(sorted);
@@ -72,6 +76,6 @@ public class ConsolePrinter {
     }
 
     private String joinList(List<?> sorted, String delimiter) {
-        return  sorted.stream().map(e -> e + delimiter).collect(Collectors.joining()).trim();
+        return sorted.stream().map(e -> e + delimiter).collect(Collectors.joining()).trim();
     }
 }

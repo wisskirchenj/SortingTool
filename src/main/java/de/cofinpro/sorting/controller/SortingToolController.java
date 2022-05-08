@@ -76,6 +76,13 @@ public record SortingToolController(DataMode dataMode, boolean sortByCount, Cons
     private List<Long> readLongs(Scanner scanner) {
         return scanner.useDelimiter("\\s+").tokens()
                 .filter(token -> !token.matches("\\s*"))
+                .map(token -> {
+                    if (!token.matches("-?\\d+")) {
+                        consolePrinter.print("\"%s\" is not a long. It will be skipped.".formatted(token));
+                    }
+                    return token;
+                })
+                .filter(token -> token.matches("-?\\d+"))
                 .map(Long::parseLong)
                 .toList();
     }

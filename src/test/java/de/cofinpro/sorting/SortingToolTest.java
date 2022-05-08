@@ -72,11 +72,9 @@ class SortingToolTest {
 
 
     @ParameterizedTest
-    @ValueSource(strings = {"-dataType",
-            "foo -dataType no",
+    @ValueSource(strings = {"foo -dataType no",
             "foo -dataType Long bar",
-            "-dataType -sortingType",
-            "long -dataType"
+            "-dataType -sortingType"
     })
     void whenArgsIncorrect_getModeThrowsIllegalState(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
@@ -84,11 +82,8 @@ class SortingToolTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"-sortingType",
-            "-sortingType Natural",
-            "-dataType -sortingType",
+    @ValueSource(strings = {"-sortingType Natural",
             "-sortingType -dataType long",
-            "natural -sortingType",
     })
     void whenArgsIncorrect_isSortByCountThrowsIllegalState(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();

@@ -38,3 +38,4 @@ statistics object, which is printed to console. Full coverage tests on Log4j and
 
 08.05.22 Stage 4 completed, merge and insertion sort generic implementations.
 
+08.05.22 Stage 5 completed, just some error handling.

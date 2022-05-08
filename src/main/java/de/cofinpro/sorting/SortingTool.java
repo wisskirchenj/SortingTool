@@ -3,6 +3,7 @@ package de.cofinpro.sorting;
 import de.cofinpro.sorting.controller.DataMode;
 import de.cofinpro.sorting.controller.SortingToolController;
 import de.cofinpro.sorting.view.ConsolePrinter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * main class for the sorting tool.
  */
+@Slf4j
 public class SortingTool {
 
     private static final String USAGE = "Usage: java SortingTool [-dataType long|line|word] [-sortingType natural|byCount].";
@@ -18,7 +20,22 @@ public class SortingTool {
 
     public static void main(final String[] args) {
         List<String> argList = Arrays.asList(args);
+        warnSkipParameters(argList);
         new SortingToolController(getMode(argList), isSortByCount(argList), new ConsolePrinter()).run();
+    }
+
+    private static void warnSkipParameters(List<String> argList) {
+        boolean isValue = false;
+        for (String arg : argList) {
+            if (arg.equals(SORT_OPTION) || arg.equals(DATA_OPTION)) {
+                isValue = true;
+                continue;
+            }
+            if (!isValue) {
+                log.warn("\"%s\" is not a valid parameter. It will be skipped.".formatted(arg));
+            }
+            isValue = false;
+        }
     }
 
     static boolean isSortByCount(List<String> argList) {
@@ -26,7 +43,8 @@ public class SortingTool {
             return false;
         }
         if (argList.indexOf(SORT_OPTION) == argList.size() - 1) {
-            throw new IllegalStateException(USAGE);
+            log.info("No sorting type defined!");
+            return false;
         }
         return switch (argList.get(argList.indexOf(SORT_OPTION) + 1)) {
             case "byCount" -> true;
@@ -40,7 +58,8 @@ public class SortingTool {
             return DataMode.WORD;
         }
         if (argList.indexOf(DATA_OPTION) == argList.size() - 1) {
-            throw new IllegalStateException(USAGE);
+            log.info("No data type defined!");
+            return DataMode.WORD;
         }
         return switch (argList.get(argList.indexOf(DATA_OPTION) + 1)) {
             case "long" -> DataMode.LONG;
