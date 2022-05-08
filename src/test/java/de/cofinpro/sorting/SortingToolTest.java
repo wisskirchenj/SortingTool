@@ -1,8 +1,7 @@
 package de.cofinpro.sorting;
 
-import de.cofinpro.sorting.controller.Mode;
+import de.cofinpro.sorting.controller.DataMode;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -19,26 +18,36 @@ class SortingToolTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"-sortIntegers",
-            "-sortIntegers -dataType word",
-            "-sortIntegers -dataType long",
-            "-dataType foo -sortIntegers",
-            "-dataType line -sortIntegers"
+    @ValueSource(strings = {"",
+            "-sortingType natural -dataType word",
+            "-dataType line -sortingType natural",
+            "-dataType long",
+            "-dataType line"
     })
-    void whenSortIntegersOption_getModeGivesSort(String argsString) {
+    void whenSortOptionEmpty_isSortGivesNatural(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
-        assertEquals(Mode.SORT_LONG, SortingTool.getMode(argList));
+        assertFalse(SortingTool.isSortByCount(argList));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"-sortingType byCount -dataType word",
+            "-dataType line -sortingType byCount"
+    })
+    void whenSortOptionyCount_isSortGivesByCount(String argsString) {
+        List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
+        assertTrue(SortingTool.isSortByCount(argList));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"",
+            "-sortingType natural",
             "-dataType word",
             "foo -dataType word bar"
     })
-    void whenArgsEmptyOrDataTypeWord_getModeGivesWord(String argsString) {
+    void whenDataTypeEmptyOrDataTypeWord_getModeGivesWord(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+"))
                 .filter(Predicate.not(String::isEmpty)).toList();
-        assertEquals(Mode.WORD, SortingTool.getMode(argList));
+        assertEquals(DataMode.WORD, SortingTool.getMode(argList));
     }
 
     @ParameterizedTest
@@ -48,7 +57,7 @@ class SortingToolTest {
     })
     void whenDataTypeLine_getModeGivesLine(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
-        assertEquals(Mode.LINE, SortingTool.getMode(argList));
+        assertEquals(DataMode.LINE, SortingTool.getMode(argList));
     }
 
     @ParameterizedTest
@@ -58,7 +67,7 @@ class SortingToolTest {
     })
     void whenDataTypeLong_getModeGivesLong(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
-        assertEquals(Mode.LONG, SortingTool.getMode(argList));
+        assertEquals(DataMode.LONG, SortingTool.getMode(argList));
     }
 
 
@@ -66,11 +75,23 @@ class SortingToolTest {
     @ValueSource(strings = {"-dataType",
             "foo -dataType no",
             "foo -dataType Long bar",
-            "foo",
+            "-dataType -sortingType",
             "long -dataType"
     })
     void whenArgsIncorrect_getModeThrowsIllegalState(String argsString) {
         List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
         assertThrows(IllegalStateException.class, () -> SortingTool.getMode(argList));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"-sortingType",
+            "-sortingType Natural",
+            "-dataType -sortingType",
+            "-sortingType -dataType long",
+            "natural -sortingType",
+    })
+    void whenArgsIncorrect_isSortByCountThrowsIllegalState(String argsString) {
+        List<String> argList = Arrays.stream(argsString.split("\\s+")).toList();
+        assertThrows(IllegalStateException.class, () -> SortingTool.isSortByCount(argList));
     }
 }

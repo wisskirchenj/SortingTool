@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'de.cofinpro'
-version '0.1-SNAPSHOT'
+version '0.4-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
