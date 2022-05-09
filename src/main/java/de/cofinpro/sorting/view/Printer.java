@@ -1,8 +1,11 @@
 package de.cofinpro.sorting.view;
 
+import de.cofinpro.sorting.config.PropertyManager;
 import de.cofinpro.sorting.domain.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,10 +15,42 @@ import java.util.stream.Collectors;
  * uses Log4j for printing to stdout (not in the hyperskill version).
  */
 @Slf4j
-public class ConsolePrinter {
+public class Printer {
 
-    public void print(String msg) {
-        log.info(msg);
+    private FileWriter writer = null;
+
+    public Printer() {
+        initLogger();
+    }
+
+    private void initLogger() {
+        String outputPath = PropertyManager.getProperty(PropertyManager.OUTPUT_OPTION);
+        if (!outputPath.isEmpty()) {
+            try {
+                writer = new FileWriter(outputPath);
+            } catch (IOException exception) {
+                log.error("IO Error opening output file given (%s)! Writing to stdout".formatted(outputPath));
+                writer = null;
+            }
+        }
+    }
+
+    private void log(String msg) {
+        if (writer != null) {
+            try {
+                writer.write(msg);
+            } catch (IOException e) {
+                log.error("IO Error writing to output file! Writing to stdout from now on");
+                log.info(msg);
+                writer = null;
+            }
+        } else {
+            log.info(msg);
+        }
+    }
+
+    public void printError(String msg) {
+        log.error(msg);
     }
 
     public void printSortResult(List<?> sorted) {
@@ -37,21 +72,32 @@ public class ConsolePrinter {
         if (sorted.get(0) instanceof LineCountEntry) {
             printLineByCountResult(sorted);
         }
+        closeWriter();
+    }
+
+    private void closeWriter() {
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                log.error("IO Error closing output file!");
+            }
+        }
     }
 
     private void printWordByCountResult(List<?> sorted) {
         long amount = sorted.stream().map(e -> ((CountEntry) e).getCount()).mapToLong(Long::longValue).sum();
-        log.info(String.format("Total words: %d.%n%s", amount, joinByCount(sorted, amount)));
+        log(String.format("Total words: %d.%n%s", amount, joinByCount(sorted, amount)));
     }
 
     private void printLineByCountResult(List<?> sorted) {
         long amount = sorted.stream().map(e -> ((CountEntry) e).getCount()).mapToLong(Long::longValue).sum();
-        log.info(String.format("Total lines: %d.%n%s", amount, joinByCount(sorted, amount)));
+        log(String.format("Total lines: %d.%n%s", amount, joinByCount(sorted, amount)));
     }
 
     private void printLongByCountResult(List<?> sorted) {
         long amount = sorted.stream().map(e -> ((CountEntry) e).getCount()).mapToLong(Long::longValue).sum();
-        log.info(String.format("Total numbers: %d.%n%s", amount, joinByCount(sorted, amount)));
+        log(String.format("Total numbers: %d.%n%s", amount, joinByCount(sorted, amount)));
     }
 
     private String joinByCount(List<?> sorted, long amount) {
@@ -64,15 +110,15 @@ public class ConsolePrinter {
     }
 
     private void printLineResult(List<?> sorted) {
-        log.info(String.format("Total lines: %d.%nSorted data:%n%s", sorted.size(), joinList(sorted, "\n")));
+        log(String.format("Total lines: %d.%nSorted data:%n%s", sorted.size(), joinList(sorted, "\n")));
     }
 
     private void printWordResult(List<?> sorted) {
-        log.info(String.format("Total words: %d.%nSorted data: %s", sorted.size(), joinList(sorted, " ")));
+        log(String.format("Total words: %d.%nSorted data: %s", sorted.size(), joinList(sorted, " ")));
     }
 
     private void printLongResult(List<?> sorted) {
-        log.info(String.format("Total numbers: %d.%nSorted data: %s", sorted.size(), joinList(sorted, " ")));
+        log(String.format("Total numbers: %d.%nSorted data: %s", sorted.size(), joinList(sorted, " ")));
     }
 
     private String joinList(List<?> sorted, String delimiter) {

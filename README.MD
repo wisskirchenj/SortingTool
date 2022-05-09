@@ -25,7 +25,7 @@ Have fun!
 
 ## Project completion
 
-[//]: # (Project was completed on xx.0d.22.)
+Project was completed on 09.05.22.
 
 ## Progress
 
@@ -39,3 +39,5 @@ statistics object, which is printed to console. Full coverage tests on Log4j and
 08.05.22 Stage 4 completed, merge and insertion sort generic implementations.
 
 08.05.22 Stage 5 completed, just some error handling.
+
+09.05.22 Stage 6 completed, new properties handling and File-IO for sorting in- and output

@@ -42,7 +42,7 @@ public class SortingStrategies {
             return list;
         }
         List<Queue<T>> bottomUpQueues = list.stream().map(t -> {
-            Queue<T> q = new ArrayDeque<>();
+            Queue<T> q = new ArrayDeque<>(1);
             q.add(t);
             return q;
         }).toList();

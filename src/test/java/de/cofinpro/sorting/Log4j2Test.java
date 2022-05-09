@@ -33,10 +33,10 @@ class Log4j2Test {
     }
 
     @Test
-    void logLevelSetToInfoTest() {
+    void logLevelSetToTraceTest() {
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
         Level rootLogLevel = context.getConfiguration().getLoggerConfig(LogManager.ROOT_LOGGER_NAME).getLevel();
         System.out.println("Root - Loglevel Slf4J is : " + rootLogLevel);
-        assertEquals("INFO", rootLogLevel.toString());
+        assertEquals("TRACE", rootLogLevel.toString());
     }
 }
