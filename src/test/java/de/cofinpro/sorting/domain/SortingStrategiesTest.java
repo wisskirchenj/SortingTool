@@ -42,13 +42,21 @@ class SortingStrategiesTest {
         assertEquals(expected, SortingStrategies.insertionSort(listToSort));
     }
 
-
     @ParameterizedTest
     @MethodSource("listProvide")
     <T extends Comparable<T>> void mergeSort(List<T> listToSort) {
         List<T> expected = new ArrayList<>(listToSort);
         Collections.sort(expected);
         assertEquals(expected, SortingStrategies.mergeSort(listToSort));
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("listProvide")
+    <T extends Comparable<T>> void quickSort(List<T> listToSort) {
+        List<T> expected = new ArrayList<>(listToSort);
+        Collections.sort(expected);
+        assertEquals(expected, SortingStrategies.quickSort(listToSort));
     }
 
     @Test
@@ -65,6 +73,15 @@ class SortingStrategiesTest {
         final List<Integer> list = new ArrayList<>(50000);
         IntStream.range(0, 50000).forEach(n -> list.add(50000 - n));
         List<Integer> sorted = SortingStrategies.mergeSort(list);
+        assertEquals(1, sorted.get(0));
+        assertEquals(50000, sorted.get(49999));
+    }
+
+    @Test
+    void massTestQuickSort() {
+        final List<Integer> list = new ArrayList<>(50000);
+        IntStream.range(0, 50000).forEach(n -> list.add(50000 - n));
+        List<Integer> sorted = SortingStrategies.quickSort(list);
         assertEquals(1, sorted.get(0));
         assertEquals(50000, sorted.get(49999));
     }

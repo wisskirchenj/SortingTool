@@ -10,15 +10,17 @@ import java.util.*;
  */
 public class SortingStrategies {
 
+    private static final Random rand = new Random();
     private SortingStrategies() {
         // no instances
     }
 
     /**
      * implementation of the simple - but for large unordered data too slow - insertion sort algorithm
+     *
      * @param list the unsorted list
+     * @param <T>  the entry type of the given list implementing Comparable<T>
      * @return the sorted list
-     * @param <T> the entry type of the given list implementing Comparable<T>
      */
     public static <T extends Comparable<T>> List<T> insertionSort(List<T> list) {
         for (int i = 1; i < list.size(); i++) {
@@ -30,12 +32,59 @@ public class SortingStrategies {
         return list;
     }
 
+    public static <T extends Comparable<T>> List<T> quickSort(List<T> list) {
+        quickSort(list, 0, list.size() - 1);
+        return list;
+    }
+
+    private static <T extends Comparable<T>> void quickSort(List<T> list, int lo, int hi) {
+        // Ensure indices are in correct order
+        if (lo >= hi || lo < 0) {
+            return;
+        }
+
+        // Choose a random pivot and move it to the end
+        int pivotIndex = lo + rand.nextInt(hi - lo + 1);
+        Collections.swap(list, pivotIndex, hi);
+
+        // Partition array and get the pivot index
+        var p = partition(list, lo, hi);
+
+        // Sort the two partitions
+        quickSort(list, lo, p - 1);// Left side of pivot
+        quickSort(list, p + 1, hi); // Right side of pivot
+    }
+
+    // Divides array into two partitions
+    private static  <T extends Comparable<T>> int partition(List<T> list, int lo, int hi) {
+        // Choose the last element as the pivot
+        var pivot = list.get(hi);
+
+        // Temporary pivot index
+        var i = lo - 1;
+
+        for (var j = lo; j < hi; j++) {
+            // If the current element is less than or equal to the pivot
+            if (list.get(j).compareTo(pivot) <= 0) {
+                // Move the temporary pivot index forward
+                i++;
+                // Swap the current element with the element at the temporary pivot index
+                Collections.swap(list, i, j);
+            }
+        }
+
+        // Move the pivot element to the correct pivot position (between the smaller and larger elements)
+        Collections.swap(list, i + 1, hi);
+        return i + 1;
+    }
+
     /**
      * implementation of the relatively quick O(n*log(n)) merge sort algorithm. The implementation is bottom-up,
      * i.e. non-recursive, and makes essential use of the Queue<T> interface to merge bottom-up sub lists.
+     *
      * @param list the unsorted list
+     * @param <T>  the entry type of the given list implementing Comparable<T>
      * @return the sorted list
-     * @param <T> the entry type of the given list implementing Comparable<T>
      */
     public static <T extends Comparable<T>> List<T> mergeSort(List<T> list) {
         if (list.size() < 2) {
