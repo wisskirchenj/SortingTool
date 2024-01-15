@@ -18,6 +18,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
     implementation("org.apache.logging.log4j:log4j-slf4j2-impl:$log4jVersion")
+    implementation("org.apache.pdfbox:pdfbox:2.0.24")
 
     val lombokVersion = "1.18.30"
     compileOnly("org.projectlombok:lombok:$lombokVersion")
