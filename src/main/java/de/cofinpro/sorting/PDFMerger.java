@@ -9,9 +9,7 @@ public class PDFMerger {
 
     public static void main(String[] args) {
         PDFMerger merger = new PDFMerger();
-        merger.mergePDFs("/Users/jwisskirchen/IdeaProjects/SortingTool/src/main/resources/pdf/CV_Anhang_Wißkirchen_2024.pdf",
-                "/Users/jwisskirchen/IdeaProjects/SortingTool/src/main/resources/pdf/CV_Wisskirchen_2024.pdf",
-                "/Users/jwisskirchen/IdeaProjects/SortingTool/src/main/resources/pdf/CV_Juergen_Wisskirchen.pdf");
+        merger.mergePDFs("absolutePathToPdf1", "absolutePathToPdf2", "absolutePathToDestination");
     }
 
     public void mergePDFs(String pdfFilePath2, String pdfFilePath1, String destinationFilePath) {
