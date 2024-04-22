@@ -29,14 +29,13 @@ public class TreeMain {
 }
 
 
-sealed interface Tree<T> {
+sealed interface Tree<T> permits Tree.Nil, Tree.Node {
 
     boolean contains(T target);
 
     void inorderTraversal(Consumer<T> consumer);
 
     void breadthFirstTraversal(Consumer<T> consumer);
-
 
     // implement breadth-first traver
     record Nil<T>() implements Tree<T> {
